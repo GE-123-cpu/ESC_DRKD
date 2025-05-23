@@ -14,7 +14,7 @@ from sklearn.metrics import precision_recall_curve
 from skimage import morphology, measure
 from scipy.ndimage import gaussian_filter
 from fun import denormalization1, denormalization
-from data_OCT import *
+from data_Retouch import *
 from resnet import resnet18, resnet34, resnet50, wide_resnet50_2
 from de_resnet import de_resnet18, de_resnet34, de_wide_resnet50_2, de_resnet50
 from model import MultiProjectionLayer
