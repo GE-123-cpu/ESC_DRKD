@@ -116,7 +116,7 @@ def train(proj_layer, decoder, epoch, train_loader, optimizer_proj, optimizer_di
         large_value = random.randint(150, 200)
         normal_value = random.randint(64, 100)
         small_value = random.randint(10, 32)
-        weights = [0.33, 0.33, 0.33]
+        weights = [0.2, 0.3, 0.5]
         values = [large_value, normal_value, small_value]
         t = random.choices(values, weights, k=1)[0]
         img_noise_m = noise_generate(img, t)
