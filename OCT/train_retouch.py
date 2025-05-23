@@ -67,7 +67,8 @@ def main():
     img_nums = len(train_dataset)
     train_num = int(img_nums * 0.01)
     val_num = img_nums - train_num
-
+    train_data, _ = torch.utils.data.random_split(train_dataset, [train_num, val_num])
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=args.batch_size, shuffle=True, **kwargs)
     test_dataset = RetouchFolder(args.test_path)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, **kwargs)
 
@@ -78,9 +79,6 @@ def main():
     start_time = time.time()
     epoch_time = AverageMeter()
     for epoch in range(1, args.epochs + 1):
-        train_data, _ = torch.utils.data.random_split(train_dataset, [train_num, val_num])
-        train_loader = torch.utils.data.DataLoader(train_data, batch_size=args.batch_size, shuffle=True, **kwargs)
-
         need_hour, need_mins, need_secs = convert_secs2time(epoch_time.avg * (args.epochs - epoch))
         need_time = '[Need: {:02d}:{:02d}:{:02d}]'.format(need_hour, need_mins, need_secs)
         print_log(' {:3d}/{:3d} ----- [{:s}] {:s}'.format(epoch, args.epochs, time_string(), need_time), log)
@@ -129,7 +127,7 @@ def train(proj_layer, decoder, epoch, train_loader, optimizer_proj, optimizer_di
         large_value = random.randint(150, 200)
         normal_value = random.randint(64, 100)
         small_value = random.randint(10, 32)
-        weights = [0.33, 0.33, 0.33]  # 选择large的概率为0.2，normal的概率为0.3，small的概率为0.5
+        weights = [0.2, 0.3, 0.5]  
         values = [large_value, normal_value, small_value]
         t = random.choices(values, weights, k=1)[0]
         img_noise_m = noise_generate(img, t)
