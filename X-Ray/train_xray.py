@@ -39,10 +39,6 @@ def main():
     parser.add_argument('--seed', type=int, default=None, help='manual seed')
     args = parser.parse_args()
 
-    args.input_channel = 1 if args.grayscale else 3
-
-    args.input_channel = 1 if args.grayscale else 3
-
     if args.seed is None:
         args.seed = random.randint(1, 10000)
         random.seed(args.seed)
