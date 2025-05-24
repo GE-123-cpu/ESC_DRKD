@@ -65,10 +65,9 @@ def main():
     kwargs = {'num_workers': 4, 'pin_memory': True} if use_cuda else {}
     train_dataset = trainFolder(args.train_data_path)
     img_nums = len(train_dataset)
-    train_num = int(img_nums * 0.01)
+    train_num = int(img_nums * 0.1)
     val_num = img_nums - train_num
-    train_data, _ = torch.utils.data.random_split(train_dataset, [train_num, val_num])
-    train_loader = torch.utils.data.DataLoader(train_data, batch_size=args.batch_size, shuffle=True, **kwargs)
+    
     test_dataset = RetouchFolder(args.test_path)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, **kwargs)
 
@@ -79,6 +78,8 @@ def main():
     start_time = time.time()
     epoch_time = AverageMeter()
     for epoch in range(1, args.epochs + 1):
+        train_data, _ = torch.utils.data.random_split(train_dataset, [train_num, val_num])
+        train_loader = torch.utils.data.DataLoader(train_data, batch_size=args.batch_size, shuffle=True, **kwargs)
         need_hour, need_mins, need_secs = convert_secs2time(epoch_time.avg * (args.epochs - epoch))
         need_time = '[Need: {:02d}:{:02d}:{:02d}]'.format(need_hour, need_mins, need_secs)
         print_log(' {:3d}/{:3d} ----- [{:s}] {:s}'.format(epoch, args.epochs, time_string(), need_time), log)
